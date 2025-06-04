@@ -13,6 +13,18 @@ public class Departamento {
     @Column(name = "nom_depto", nullable = false, length = 32)
     private String nomDepto;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_sede", nullable = false)
+    private Sede idSede;
+
+    public Sede getIdSede() {
+        return idSede;
+    }
+
+    public void setIdSede(Sede idSede) {
+        this.idSede = idSede;
+    }
+
     public Integer getId() {
         return id;
     }
