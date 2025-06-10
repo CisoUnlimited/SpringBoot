@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ISedeDAO extends CrudRepository<Sede, Integer> {
     @Query("select s from Sede s where s.nomSede like %:name%")
-    Sede findByNomSede(@Param("name") String name);
+    Sede findSedeByNomSede(@Param("name") String name);
 }

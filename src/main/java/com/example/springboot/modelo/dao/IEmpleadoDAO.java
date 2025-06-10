@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface IEmpleadoDAO extends CrudRepository<Empleado, String> {
-    @Query("select e from Empleado e where e.idDepto ")
+    @Query("select e from Empleado e where e.idDepto.nomDepto = ?1")
     List<Empleado> findEmpleadosByNomDepto(String nomDepto);
 }
