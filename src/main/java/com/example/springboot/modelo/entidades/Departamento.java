@@ -1,6 +1,8 @@
 package com.example.springboot.modelo.entidades;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "departamento", schema = "proyecto_orm")
@@ -10,9 +12,11 @@ public class Departamento {
     @Column(name = "id_depto", nullable = false)
     private Integer id;
 
+    @NotBlank(message = "El nombre del departamento no puede estar vacío")
     @Column(name = "nom_depto", nullable = false, length = 32)
     private String nomDepto;
 
+    @NotNull(message = "La sede del departamento no puede ser NULL")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_sede", nullable = false)
     private Sede idSede;
