@@ -12,7 +12,7 @@ public class Empleado {
     @Column(name = "nom_emp", nullable = false, length = 40)
     private String nomEmp;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_depto", nullable = false)
     private Departamento idDepto;
 

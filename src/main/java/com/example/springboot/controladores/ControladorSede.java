@@ -2,6 +2,7 @@ package com.example.springboot.controladores;
 
 import com.example.springboot.modelo.dao.ISedeDAO;
 import com.example.springboot.modelo.entidades.Sede;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,14 +13,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api-rest/sedes")
 public class ControladorSede {
-
+    @Autowired
     ISedeDAO sedesDAO;
 
-    public List<Sede> sedes() {
-        return (List<Sede>) sedesDAO.findAll();
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping
     public List<Sede> listarSedes() {
         return (List<Sede>) sedesDAO.findAll();
     }
@@ -33,6 +30,12 @@ public class ControladorSede {
         } else {
             return ResponseEntity.notFound().build();    // HTTP 404
         }
+    }
+
+    @GetMapping
+    @RequestMapping("/nombre/{nomSede}")
+    public Sede buscarSedePorNombre(@PathVariable(value = "nomSede") String nomSede) {
+        return sedesDAO.findSedeByNomSede(nomSede);
     }
 
     @Validated

@@ -13,7 +13,7 @@ public class Departamento {
     @Column(name = "nom_depto", nullable = false, length = 32)
     private String nomDepto;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_sede", nullable = false)
     private Sede idSede;
 

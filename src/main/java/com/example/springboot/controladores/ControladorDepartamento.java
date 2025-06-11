@@ -1,8 +1,11 @@
 package com.example.springboot.controladores;
 
 import com.example.springboot.modelo.dao.IDepartamentoDAO;
+import com.example.springboot.modelo.dao.IEmpleadoDAO;
+import com.example.springboot.modelo.dao.ISedeDAO;
 import com.example.springboot.modelo.entidades.Departamento;
 import com.example.springboot.modelo.entidades.Empleado;
+import com.example.springboot.modelo.entidades.Sede;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +19,10 @@ import java.util.Optional;
 public class ControladorDepartamento {
     @Autowired
     IDepartamentoDAO departamentosDAO;
+    @Autowired
+    IEmpleadoDAO empleadosDAO;
+    @Autowired
+    ISedeDAO sedesDAO;
 
     @GetMapping
     public List<Departamento> listarDepartamentos() {
@@ -39,12 +46,13 @@ public class ControladorDepartamento {
 
     @GetMapping("/idSede/{idSede}")
     public List<Departamento> buscarDepartamentosPorIdSede(@PathVariable(value = "idSede") Integer idSede) {
-        return departamentosDAO.findDepartamentosByIdSede(idSede);
+        Optional<Sede> sede = sedesDAO.findById(idSede);
+        return departamentosDAO.findDepartamentosByIdSede(sede);
     }
 
     @GetMapping("/nombre/{nombre}/empleados")
     public List<Empleado> buscarEmpleadoPorNombreDepto(@PathVariable(value = "nombre") String nombre) {
-        //TODO
+        return empleadosDAO.findEmpleadosByNomDepto(nombre);
     }
 
     @Validated
