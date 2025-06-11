@@ -36,4 +36,30 @@ public class ControladorEmpleado {
     public Empleado guardarEmpleado(@Validated @RequestBody Empleado empleado){
         return empleadosDAO.save(empleado);
     }
+
+    @DeleteMapping("/baja/{id}")
+    public ResponseEntity<?> borrarEmpleado (@PathVariable(value = "id") String dni) {
+        Optional<Empleado> empleado = empleadosDAO.findById(dni);
+        if(empleado.isPresent()) {
+            empleadosDAO.deleteById(dni);
+            return ResponseEntity.ok().body("Borrado");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<?> actualizarEmpleado(@RequestBody Empleado nuevoEmpleado,
+                                                @PathVariable(value = "id") String dni) {
+        Optional<Empleado> empleado = empleadosDAO.findById(dni);
+        if (empleado.isPresent()) {
+            empleado.get().setNomEmp(nuevoEmpleado.getNomEmp());
+            empleado.get().setIdDepto(nuevoEmpleado.getIdDepto());
+            empleadosDAO.save(empleado.get());
+            return ResponseEntity.ok().body("Actualizado");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

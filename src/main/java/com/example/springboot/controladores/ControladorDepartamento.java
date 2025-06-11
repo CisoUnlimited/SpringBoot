@@ -7,6 +7,7 @@ import com.example.springboot.modelo.entidades.Departamento;
 import com.example.springboot.modelo.entidades.Empleado;
 import com.example.springboot.modelo.entidades.Sede;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +60,35 @@ public class ControladorDepartamento {
     @PostMapping("/alta")
     public Departamento guardarDepartamento(@Validated @RequestBody Departamento departamento) {
         return departamentosDAO.save(departamento);
+    }
+
+    @DeleteMapping("/baja/{id}")
+    public ResponseEntity<?> borrarDepartamento (@PathVariable(value = "id") Integer id) {
+        Optional<Departamento> departamento = departamentosDAO.findById(id);
+        if(departamento.isPresent()) {
+            try {
+                departamentosDAO.deleteById(id);
+                return ResponseEntity.ok().body("Borrado");
+            } catch (DataIntegrityViolationException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<?> actualizarDepartamento(@RequestBody Departamento nuevoDepartamento,
+                                            @PathVariable(value = "id") Integer id) {
+        Optional<Departamento> departamento = departamentosDAO.findById(id);
+        if (departamento.isPresent()) {
+            departamento.get().setNomDepto(nuevoDepartamento.getNomDepto());
+            departamento.get().setIdSede(nuevoDepartamento.getIdSede());
+            departamentosDAO.save(departamento.get());
+            return ResponseEntity.ok().body("Actualizado");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
